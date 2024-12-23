@@ -4,22 +4,22 @@ resource "azapi_resource" "pbi_privatelink" {
   type                      = "Microsoft.PowerBI/privateLinkServicesForPowerBI@2020-06-01"
   name                      = "plfabric-${local.workspace_resource_name_suffix}"
   location                  = "global"
-  parent_id                 = var.ws_resource_group_id
+  parent_id                 = data.azurerm_resource_group.ws.id
   schema_validation_enabled = false
 
   body = {
     properties = {
       privateEndpointConnections = []
-      tenantId                   = var.auth_tenant_id
+      tenantId                   = data.azurerm_client_config.current.tenant_id
     }
   }
 }
 
 resource "azurerm_private_endpoint" "fabric_pbi" {
   name                = "pbi-fabric-private-endpoint-${local.workspace_resource_name_suffix}"
-  location            = var.location
-  resource_group_name = var.ws_resource_group_name
-  subnet_id           = azurerm_subnet.services.id
+  location            = data.azurerm_resource_group.ws.location
+  resource_group_name = data.azurerm_resource_group.ws.name
+  subnet_id           = data.azurerm_subnet.services.id
 
   private_dns_zone_group {
     name = "pbi-fabric-zones-${local.workspace_resource_name_suffix}"

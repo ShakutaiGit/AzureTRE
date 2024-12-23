@@ -4,7 +4,7 @@
   "type": "object",
   "title": "Azure Fabric",
   "description": "Azure Fabric Workspace Service",
-  "required": ["auth_tenant_id"],
+  "required": [],
   "properties": {
     "display_name": {
       "type": "string",
@@ -17,27 +17,8 @@
       "type": "string",
       "title": "Description of the workspace service",
       "description": "Description of the Fabric workspace service",
-      "default": "Azure Fabric is an integrated analytics platform with Power BI, Synapse, and Data Factory.",
+      "default": "Provide access for Azure Fabric",
       "updateable": true
-    },
-    "auth_tenant_id": {
-      "type": "string",
-      "title": "Authentication Tenant ID",
-      "description": "The Azure Active Directory tenant ID for the Fabric workspace.",
-      "default": ""
-    },
-    "is_exposed_externally": {
-      "$id": "#/properties/is_exposed_externally",
-      "type": "boolean",
-      "title": "Expose externally",
-      "description": "Is the Fabric workspace accessible from outside the workspace network",
-      "default": false
-    },
-    "address_space": {
-      "$id": "#/properties/address_space",
-      "type": "string",
-      "title": "Address space",
-      "description": "The address space of the Fabric service subnets"
     }
   },
   "uiSchema": {
@@ -49,57 +30,6 @@
     "install": [
       {
         "stepId": "main"
-      },
-      {
-        "stepId": "fabric-private-endpoint-setup",
-        "stepTitle": "Configure Private Endpoint for Fabric",
-        "resourceTemplateName": "fabric-private-endpoint",
-        "resourceType": "shared-service",
-        "resourceAction": "install",
-        "properties": [
-          {
-            "name": "private_dns_zone_ids",
-            "type": "array",
-            "arraySubstitutionAction": "replace",
-            "value": [
-              {
-                "name": "analysis",
-                "description": "Private DNS Zone for Analysis Services",
-                "zone_name": "privatelink.analysis.windows.net"
-              },
-              {
-                "name": "pbidedicated",
-                "description": "Private DNS Zone for Power BI Dedicated",
-                "zone_name": "privatelink.pbidedicated.windows.net"
-              },
-              {
-                "name": "powerquery",
-                "description": "Private DNS Zone for Power Query",
-                "zone_name": "privatelink.prod.powerquery.microsoft.com"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "stepId": "fabric-private-link-connection",
-        "stepTitle": "Establish Private Link for Fabric",
-        "resourceType": "workspace",
-        "resourceAction": "install",
-        "properties": [
-          {
-            "name": "private_connection_resource_id",
-            "type": "string",
-            "description": "Resource ID of the Private Link Service",
-            "default": ""
-          },
-          {
-            "name": "subresource_names",
-            "type": "array",
-            "description": "Subresource names for the connection",
-            "default": ["tenant"]
-          }
-        ]
       }
     ],
     "upgrade": [

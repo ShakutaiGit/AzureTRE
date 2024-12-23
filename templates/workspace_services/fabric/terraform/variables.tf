@@ -1,15 +1,3 @@
-variable "ws_resource_group_name" {
-  type = string
-}
-
-variable "ws_resource_group_id" {
-  type = string
-}
-
-variable "location" {
-  type = string
-}
-
 variable "tre_id" {
   type = string
 }
@@ -19,9 +7,9 @@ variable "tre_resource_id" {
 }
 
 variable "workspace_id" {
-  type        = string
+  type = string
 }
 
-variable "auth_tenant_id" {
+variable "arm_environment" {
   type = string
 }

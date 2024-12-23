@@ -1,7 +1,7 @@
 ---
 schemaVersion: 1.0.0
 name: tre-service-fabric
-version: 1.0.0
+version: 1.0.25
 description: "An Azure TRE service for Azure Fabric."
 registry: azuretre
 dockerfile: Dockerfile.tmpl
@@ -17,18 +17,15 @@ credentials:
     env: ARM_CLIENT_SECRET
 
 parameters:
+  - name: id
+    type: string
+    description: "Resource ID"
   - name: workspace_id
     type: string
     description: "ID of the TRE workspace"
   - name: tre_id
     type: string
     description: "TRE Instance ID"
-  - name: id
-    type: string
-    description: "Resource ID"
-  - name: auth_tenant_id
-    type: string
-    description: "Azure Active Directory Tenant ID"
   - name: tfstate_resource_group_name
     type: string
     description: "Resource group containing the Terraform state storage account"
@@ -50,20 +47,38 @@ parameters:
     default: "public"
 
 outputs:
-  - name: fabric_private_endpoint
+  - name: analysis_dns_zone_id
     type: string
     applyTo:
       - install
       - upgrade
-  - name: dns_zones
-    type: array
+  - name: pbidedicated_dns_zone_id
+    type: string
+    applyTo:
+      - install
+      - upgrade
+  - name: powerquery_dns_zone_id
+    type: string
+    applyTo:
+      - install
+      - upgrade
+  - name: fabric_private_endpoint_name
+    type: string
+    applyTo:
+      - install
+      - upgrade
+  - name: pbi_privatelink_id
+    type: string
     applyTo:
       - install
       - upgrade
 
 mixins:
+  - exec
   - terraform:
-      clientVersion: 1.3.6
+      clientVersion: 1.4.6
+  - az:
+      clientVersion: 2.49.0
 
 install:
   - terraform:
@@ -72,8 +87,8 @@ install:
         tre_resource_id: ${ bundle.parameters.id }
         tre_id: ${ bundle.parameters.tre_id }
         workspace_id: ${ bundle.parameters.workspace_id }
-        auth_tenant_id: ${ bundle.parameters.auth_tenant_id }
         arm_environment: ${ bundle.parameters.arm_environment }
+
       backendConfig:
         use_azuread_auth: "true"
         use_oidc: "true"
@@ -81,9 +96,13 @@ install:
         storage_account_name: ${ bundle.parameters.tfstate_storage_account_name }
         container_name: ${ bundle.parameters.tfstate_container_name }
         key: ${ bundle.name }-${ bundle.parameters.id }
+
       outputs:
-        - name: fabric_private_endpoint
-        - name: dns_zones
+        - name: fabric_private_endpoint_name
+        - name: pbi_privatelink_id
+        - name: analysis_dns_zone_id
+        - name: pbidedicated_dns_zone_id
+        - name: powerquery_dns_zone_id
 
 upgrade:
   - terraform:
@@ -92,8 +111,8 @@ upgrade:
         tre_resource_id: ${ bundle.parameters.id }
         tre_id: ${ bundle.parameters.tre_id }
         workspace_id: ${ bundle.parameters.workspace_id }
-        auth_tenant_id: ${ bundle.parameters.auth_tenant_id }
         arm_environment: ${ bundle.parameters.arm_environment }
+
       backendConfig:
         use_azuread_auth: "true"
         use_oidc: "true"
@@ -101,9 +120,13 @@ upgrade:
         storage_account_name: ${ bundle.parameters.tfstate_storage_account_name }
         container_name: ${ bundle.parameters.tfstate_container_name }
         key: ${ bundle.name }-${ bundle.parameters.id }
+
       outputs:
-        - name: fabric_private_endpoint
-        - name: dns_zones
+        - name: fabric_private_endpoint_name
+        - name: analysis_dns_zone_id
+        - name: pbidedicated_dns_zone_id
+        - name: powerquery_dns_zone_id
+        - name: pbi_privatelink_id
 
 uninstall:
   - terraform:
@@ -112,8 +135,8 @@ uninstall:
         tre_resource_id: ${ bundle.parameters.id }
         tre_id: ${ bundle.parameters.tre_id }
         workspace_id: ${ bundle.parameters.workspace_id }
-        auth_tenant_id: ${ bundle.parameters.auth_tenant_id }
         arm_environment: ${ bundle.parameters.arm_environment }
+
       backendConfig:
         use_azuread_auth: "true"
         use_oidc: "true"

@@ -23,12 +23,6 @@
       }
     },
     {
-      "name": "location",
-      "source": {
-        "env": "LOCATION"
-      }
-    },
-    {
       "name": "address_space",
       "source": {
         "env": "ADDRESS_SPACE"
