@@ -17,3 +17,7 @@ output "fabric_private_endpoint_name" {
 output "pbi_privatelink_id" {
   value = azapi_resource.pbi_privatelink.id
 }
+
+output "workspace_address_space" {
+  value = jsonencode(data.azurerm_virtual_network.ws.address_space)
+}

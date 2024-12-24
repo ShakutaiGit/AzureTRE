@@ -1,7 +1,7 @@
 ---
 schemaVersion: 1.0.0
 name: tre-service-fabric
-version: 1.0.25
+version: 1.0.26
 description: "An Azure TRE service for Azure Fabric."
 registry: azuretre
 dockerfile: Dockerfile.tmpl
@@ -72,6 +72,11 @@ outputs:
     applyTo:
       - install
       - upgrade
+  - name: workspace_address_space
+    type: string
+    applyTo:
+      - install
+      - upgrade
 
 mixins:
   - exec
@@ -103,6 +108,8 @@ install:
         - name: analysis_dns_zone_id
         - name: pbidedicated_dns_zone_id
         - name: powerquery_dns_zone_id
+        - name: workspace_address_space
+
 
 upgrade:
   - terraform:
@@ -127,6 +134,8 @@ upgrade:
         - name: pbidedicated_dns_zone_id
         - name: powerquery_dns_zone_id
         - name: pbi_privatelink_id
+        - name: workspace_address_space
+
 
 uninstall:
   - terraform:
