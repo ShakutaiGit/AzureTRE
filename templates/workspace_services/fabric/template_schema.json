@@ -198,6 +198,33 @@
     "uninstall": [
       {
         "stepId": "main"
+      },
+      {
+        "stepId": "remove-firewall-rules",
+        "stepTitle": "Remove firewall rules for AAD",
+        "resourceTemplateName": "tre-shared-service-firewall",
+        "resourceType": "shared-service",
+        "resourceAction": "upgrade",
+        "properties": [
+          {
+            "name": "network_rule_collections",
+            "type": "array",
+            "arraySubstitutionAction": "remove",
+            "arrayMatchField": "name",
+            "value": {
+              "name": "nrc_svc_{{ resource.id }}_fabric"
+            }
+          },
+          {
+            "name": "rule_collections",
+            "type": "array",
+            "arraySubstitutionAction": "remove",
+            "arrayMatchField": "name",
+            "value": {
+              "name": "arc_svc_{{ resource.id }}_fabric"
+            }
+          }
+        ]
       }
     ]
   }
