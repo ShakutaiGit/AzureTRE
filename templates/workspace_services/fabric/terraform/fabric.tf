@@ -1,9 +1,7 @@
-# Fabric Private Endpoint Resources
-
 resource "azapi_resource" "pbi_privatelink" {
-  type                      = "Microsoft.PowerBI/privateLinkServicesForPowerBI@2020-06-01"
-  name                      = "plfabric-${local.workspace_resource_name_suffix}"
-  location                  = "global"
+  type                      = local.pbi_privatelink_type
+  name                      = "${local.pbi_privatelink_name_prefix}-${local.workspace_resource_name_suffix}"
+  location                  = local.pbi_privatelink_location
   parent_id                 = data.azurerm_resource_group.ws.id
   schema_validation_enabled = false
 
@@ -16,30 +14,26 @@ resource "azapi_resource" "pbi_privatelink" {
 }
 
 resource "azurerm_private_endpoint" "fabric_pbi" {
-  name                = "pbi-fabric-private-endpoint-${local.workspace_resource_name_suffix}"
+  name                = "${local.private_endpoint_name_prefix}-${local.workspace_resource_name_suffix}"
   location            = data.azurerm_resource_group.ws.location
-  resource_group_name = data.azurerm_resource_group.ws.name
+  resource_group_name = local.workspace_resource_group_name
   subnet_id           = data.azurerm_subnet.services.id
 
   private_dns_zone_group {
-    name = "pbi-fabric-zones-${local.workspace_resource_name_suffix}"
+    name = "${local.dns_zone_group_name_prefix}-${local.workspace_resource_name_suffix}"
     private_dns_zone_ids = [
-      azurerm_private_dns_zone.analysis.id,
-      azurerm_private_dns_zone.pbidedicated.id,
-      azurerm_private_dns_zone.powerquery.id
+      for dns_key in keys(local.dns_zones) : azurerm_private_dns_zone.dns_zone[dns_key].id
     ]
   }
 
   private_service_connection {
-    name                           = "pbi-fabric-connection-${local.workspace_resource_name_suffix}"
+    name                           = "${local.private_service_connection_name_prefix}-${local.workspace_resource_name_suffix}"
     private_connection_resource_id = azapi_resource.pbi_privatelink.id
     is_manual_connection           = false
-    subresource_names              = ["tenant"]
+    subresource_names              = local.subresource_names
   }
 
   depends_on = [
-    azurerm_private_dns_zone_virtual_network_link.analysis_link,
-    azurerm_private_dns_zone_virtual_network_link.pbidedicated_link,
-    azurerm_private_dns_zone_virtual_network_link.powerquery_link
+    for dns_key in keys(local.dns_zones) : azurerm_private_dns_zone_virtual_network_link.dns_zone_link[dns_key]
   ]
 }
