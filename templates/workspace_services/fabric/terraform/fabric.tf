@@ -32,8 +32,4 @@ resource "azurerm_private_endpoint" "fabric_pbi" {
     is_manual_connection           = false
     subresource_names              = local.subresource_names
   }
-
-  depends_on = [
-    for dns_key in keys(local.dns_zones) : azurerm_private_dns_zone_virtual_network_link.dns_zone_link[dns_key]
-  ]
 }

@@ -1,13 +1,14 @@
-output "analysis_dns_zone_id" {
-  value = azurerm_private_dns_zone.analysis.name
+output "analysis_dns_zone_name" {
+  # or _id if you prefer
+  value = azurerm_private_dns_zone.dns_zone["analysis"].name
 }
 
-output "pbidedicated_dns_zone_id" {
-  value = azurerm_private_dns_zone.pbidedicated.name
+output "pbidedicated_dns_zone_name" {
+  value = azurerm_private_dns_zone.dns_zone["pbidedicated"].name
 }
 
-output "powerquery_dns_zone_id" {
-  value = azurerm_private_dns_zone.powerquery.name
+output "powerquery_dns_zone_name" {
+  value = azurerm_private_dns_zone.dns_zone["powerquery"].name
 }
 
 output "fabric_private_endpoint_name" {
