@@ -3,7 +3,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">=3.112.0"
+      version = "=3.117.0"
     }
     fabric = {
       source  = "microsoft/fabric"
@@ -11,9 +11,10 @@ terraform {
     }
     azapi = {
       source  = "Azure/azapi"
-      version = ">=1.15.0"
+      version = "=1.15.0"
     }
   }
+  backend "azurerm" {}
 }
 
 provider "azurerm" {
