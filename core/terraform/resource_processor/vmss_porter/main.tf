@@ -3,7 +3,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 3.112"
+      version = ">= 3.117"
     }
     random = {
       source  = "hashicorp/random"
@@ -219,7 +219,7 @@ resource "azurerm_role_assignment" "keyvault_vmss_role" {
 resource "azurerm_role_assignment" "vmss_kv_encryption_key_user" {
   count                = var.enable_cmk_encryption ? 1 : 0
   scope                = var.key_store_id
-  role_definition_name = "Key Vault Crypto Service Encryption User"
+  role_definition_name = "Key Vault Crypto Officer"
   principal_id         = azurerm_user_assigned_identity.vmss_msi.principal_id
 }
 

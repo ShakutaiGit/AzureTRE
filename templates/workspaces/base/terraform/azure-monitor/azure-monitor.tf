@@ -19,9 +19,31 @@ resource "azurerm_storage_account" "app_insights" {
   account_kind                     = "StorageV2"
   account_tier                     = "Standard"
   account_replication_type         = "LRS"
+  table_encryption_key_type        = var.enable_cmk_encryption ? "Account" : "Service"
+  queue_encryption_key_type        = var.enable_cmk_encryption ? "Account" : "Service"
   allow_nested_items_to_be_public  = false
   cross_tenant_replication_enabled = false
+  local_user_enabled               = false
   tags                             = var.tre_workspace_tags
+
+  # unclear the implications on az-monitor, so leaving it for now.
+  # shared_access_key_enabled        = false
+
+  dynamic "identity" {
+    for_each = var.enable_cmk_encryption ? [1] : []
+    content {
+      type         = "UserAssigned"
+      identity_ids = [var.encryption_identity_id]
+    }
+  }
+
+  dynamic "customer_managed_key" {
+    for_each = var.enable_cmk_encryption ? [1] : []
+    content {
+      key_vault_key_id          = var.encryption_key_versionless_id
+      user_assigned_identity_id = var.encryption_identity_id
+    }
+  }
 
   # changing this value is destructive, hence attribute is in lifecycle.ignore_changes block below
   infrastructure_encryption_enabled = true
