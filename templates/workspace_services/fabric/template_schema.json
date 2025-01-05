@@ -29,48 +29,15 @@
   "pipeline": {
     "install": [
       {
-        "stepId": "1606603d-2eb7-487d-8201-01376673e2d5",
-        "stepTitle": "Upgrade workspace to ensure the existence of Fabric resources",
-        "resourceType": "workspace",
-        "resourceAction": "upgrade",
-        "properties": []
-      },
-      {
         "stepId": "main"
       },
       {
         "stepId": "86e9ab55-11f1-40e2-8f1a-881179305e46",
-        "stepTitle": "Add firewall rules for AAD",
+        "stepTitle": "Add AAD firewall rules",
         "resourceTemplateName": "tre-shared-service-firewall",
         "resourceType": "shared-service",
         "resourceAction": "upgrade",
         "properties": [
-          {
-            "name": "network_rule_collections",
-            "type": "array",
-            "arraySubstitutionAction": "replace",
-            "arrayMatchField": "name",
-            "value": {
-              "name": "nrc_svc_{{ resource.id }}_fabric",
-              "action": "Allow",
-              "rules": [
-                {
-                  "name": "AzureAD",
-                  "description": "Allow access to AAD",
-                  "source_addresses": "{{ resource.properties.workspace_address_space }}",
-                  "destination_addresses": [
-                    "AzureActiveDirectory"
-                  ],
-                  "destination_ports": [
-                    "*"
-                  ],
-                  "protocols": [
-                    "TCP"
-                  ]
-                }
-              ]
-            }
-          },
           {
             "name": "rule_collections",
             "type": "array",
@@ -83,7 +50,7 @@
                 {
                   "name": "microsoft-aad",
                   "description": "Allow AAD FQDNs",
-                  "source_addresses": "{{ resource.properties.workspace_address_space }}",
+                  "source_addresses": ["{{ resource.properties.workspace_address_space }}"],
                   "target_fqdns": [
                     "*.msftauth.net",
                     "*.msauth.net",
@@ -113,48 +80,15 @@
     ],
     "upgrade": [
       {
-        "stepId": "01dfec9c-ecc5-42c4-a022-050930a29916",
-        "stepTitle": "Upgrade workspace to ensure the existence of Postgres' address space",
-        "resourceType": "workspace",
-        "resourceAction": "upgrade",
-        "properties": []
-      },
-      {
         "stepId": "main"
       },
       {
         "stepId": "c3eee908-74aa-4dee-a1be-aacd5c57ddc4",
-        "stepTitle": "Add firewall rules for AAD",
+        "stepTitle": "Add AAD firewall rules",
         "resourceTemplateName": "tre-shared-service-firewall",
         "resourceType": "shared-service",
         "resourceAction": "upgrade",
         "properties": [
-          {
-            "name": "network_rule_collections",
-            "type": "array",
-            "arraySubstitutionAction": "replace",
-            "arrayMatchField": "name",
-            "value": {
-              "name": "nrc_svc_{{ resource.id }}_fabric",
-              "action": "Allow",
-              "rules": [
-                {
-                  "name": "AzureAD",
-                  "description": "Allow access to AAD",
-                  "source_addresses": "{{ resource.properties.workspace_address_space }}",
-                  "destination_addresses": [
-                    "AzureActiveDirectory"
-                  ],
-                  "destination_ports": [
-                    "*"
-                  ],
-                  "protocols": [
-                    "TCP"
-                  ]
-                }
-              ]
-            }
-          },
           {
             "name": "rule_collections",
             "type": "array",
@@ -167,7 +101,7 @@
                 {
                   "name": "microsoft-aad",
                   "description": "Allow AAD FQDNs",
-                  "source_addresses": "{{ resource.properties.workspace_address_space }}",
+                  "source_addresses": ["{{ resource.properties.workspace_address_space }}"],
                   "target_fqdns": [
                     "*.msftauth.net",
                     "*.msauth.net",
@@ -201,20 +135,11 @@
       },
       {
         "stepId": "remove-firewall-rules",
-        "stepTitle": "Remove firewall rules for AAD",
+        "stepTitle": "Remove AAD firewall rules",
         "resourceTemplateName": "tre-shared-service-firewall",
         "resourceType": "shared-service",
         "resourceAction": "upgrade",
         "properties": [
-          {
-            "name": "network_rule_collections",
-            "type": "array",
-            "arraySubstitutionAction": "remove",
-            "arrayMatchField": "name",
-            "value": {
-              "name": "nrc_svc_{{ resource.id }}_fabric"
-            }
-          },
           {
             "name": "rule_collections",
             "type": "array",
