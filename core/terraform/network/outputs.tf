@@ -3,43 +3,43 @@ output "core_vnet_id" {
 }
 
 output "bastion_subnet_id" {
-  value = azurerm_subnet.bastion.id
+  value = [for s in azurerm_virtual_network.core.subnet : s if s.name == "AzureBastionSubnet"][0].id
 }
 
 output "azure_firewall_subnet_id" {
-  value = azurerm_subnet.azure_firewall.id
+  value = [for s in azurerm_virtual_network.core.subnet : s if s.name == "AzureFirewallSubnet"][0].id
 }
 
 output "app_gw_subnet_id" {
-  value = azurerm_subnet.app_gw.id
+  value = [for s in azurerm_virtual_network.core.subnet : s if s.name == "AppGwSubnet"][0].id
 }
 
 output "web_app_subnet_id" {
-  value = azurerm_subnet.web_app.id
+  value = [for s in azurerm_virtual_network.core.subnet : s if s.name == "WebAppSubnet"][0].id
 }
 
 output "shared_subnet_id" {
-  value = azurerm_subnet.shared.id
+  value = [for s in azurerm_virtual_network.core.subnet : s if s.name == "SharedSubnet"][0].id
 }
 
 output "airlock_processor_subnet_id" {
-  value = azurerm_subnet.airlock_processor.id
+  value = [for s in azurerm_virtual_network.core.subnet : s if s.name == "AirlockProcessorSubnet"][0].id
 }
 
 output "airlock_storage_subnet_id" {
-  value = azurerm_subnet.airlock_storage.id
+  value = [for s in azurerm_virtual_network.core.subnet : s if s.name == "AirlockStorageSubnet"][0].id
 }
 
 output "airlock_events_subnet_id" {
-  value = azurerm_subnet.airlock_events.id
+  value = [for s in azurerm_virtual_network.core.subnet : s if s.name == "AirlockEventsSubnet"][0].id
 }
 
 output "resource_processor_subnet_id" {
-  value = azurerm_subnet.resource_processor.id
+  value = [for s in azurerm_virtual_network.core.subnet : s if s.name == "ResourceProcessorSubnet"][0].id
 }
 
 output "airlock_notification_subnet_id" {
-  value = azurerm_subnet.airlock_notification.id
+  value = [for s in azurerm_virtual_network.core.subnet : s if s.name == "AirlockNotifiactionSubnet"][0].id
 }
 
 # DNS Zones
