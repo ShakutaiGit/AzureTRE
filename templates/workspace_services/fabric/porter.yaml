@@ -1,7 +1,7 @@
 ---
 schemaVersion: 1.0.0
 name: tre-service-fabric
-version: 1.0.40
+version: 1.0.41
 description: "An Azure TRE service for Azure Fabric."
 registry: azuretre
 dockerfile: Dockerfile.tmpl
@@ -52,6 +52,11 @@ outputs:
     applyTo:
       - install
       - upgrade
+  - name: connection_uri
+    type: string
+    applyTo:
+      - install
+      - upgrade
 
 mixins:
   - terraform:
@@ -78,6 +83,7 @@ install:
 
       outputs:
         - name: workspace_address_space
+        - name: connection_uri
 
 
 upgrade:
@@ -99,6 +105,7 @@ upgrade:
 
       outputs:
         - name: workspace_address_space
+        - name: connection_uri
 
 
 uninstall:

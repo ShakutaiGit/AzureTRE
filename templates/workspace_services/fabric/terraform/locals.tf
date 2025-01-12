@@ -12,6 +12,7 @@ locals {
     dns_zone_group_name_prefix             = "pbi-fabric-zones"
     private_service_connection_name_prefix = "pbi-fabric-connection"
     subresource_names                      = ["tenant"]
+    fabric_ctid_url = "https://app.fabric.microsoft.com/home?ctid="
     tre_workspace_service_tags = {
     tre_id                   = var.tre_id
     tre_workspace_id         = var.workspace_id
