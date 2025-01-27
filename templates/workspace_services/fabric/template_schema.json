@@ -59,7 +59,8 @@
                     "aadcdn.msauthimages.net",
                     "*.login.live.com",
                     "*.microsoftonline-p.com",
-                    "msft.sts.microsoft.com"
+                    "msft.sts.microsoft.com",
+                    "graph.microsoft.com"
                   ],
                   "protocols": [
                     {
@@ -110,7 +111,8 @@
                     "aadcdn.msauthimages.net",
                     "*.login.live.com",
                     "*.microsoftonline-p.com",
-                    "msft.sts.microsoft.com"
+                    "msft.sts.microsoft.com",
+                    "graph.microsoft.com"
                   ],
                   "protocols": [
                     {
